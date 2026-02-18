@@ -16,6 +16,11 @@ Linux-focused dotfiles for this machine.
 git config --global core.excludesfile ~/.gitignore_global
 ```
 
+## Packages (CachyOS/Arch)
+```bash
+./scripts/install-cachyos-core.sh
+```
+
 ## Notes
 - Installs links with backup to `~/.dotfiles-backup/<timestamp>`.
 - This repo intentionally tracks Linux shell and prompt setup first.
