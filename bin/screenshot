@@ -28,6 +28,12 @@ case "$mode" in
     grim "$outfile"
     notify_ok
     ;;
+  full-clipboard)
+    grim - | wl-copy
+    if has notify-send; then
+      notify-send "Screenshot copied" "Full screen copied to clipboard"
+    fi
+    ;;
   region)
     grim -g "$(slurp)" "$outfile"
     notify_ok
@@ -43,7 +49,7 @@ case "$mode" in
     fi
     ;;
   *)
-    echo "Usage: screenshot [full|region|window]" >&2
+    echo "Usage: screenshot [full|full-clipboard|region|window]" >&2
     exit 2
     ;;
 esac
