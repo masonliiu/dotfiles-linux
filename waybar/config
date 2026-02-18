@@ -42,7 +42,7 @@
 
   "clock": {
     "interval": 1,
-    "format": "{:%A %d %I:%M %p}",
+    "format": "{:%A %d %I:%M}",
     "tooltip-format": "<tt>{calendar}</tt>",
     "calendar": {
       "mode": "month",
