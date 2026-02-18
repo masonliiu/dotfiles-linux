@@ -1,0 +1,33 @@
+add_newline = false
+
+format = """
+$directory$git_branch$git_status$nodejs$python$docker_context$line_break$character
+"""
+
+[directory]
+truncation_length = 3
+truncate_to_repo = false
+style = "bold cyan"
+
+[character]
+success_symbol = "[>](bold green)"
+error_symbol = "[>](bold red)"
+
+[git_branch]
+symbol = "git:"
+style = "bold yellow"
+
+[git_status]
+style = "bold red"
+
+[nodejs]
+symbol = "node:"
+style = "bold green"
+
+[python]
+symbol = "py:"
+style = "bold blue"
+
+[docker_context]
+symbol = "docker:"
+style = "bold blue"
