@@ -12,6 +12,12 @@ Linux-focused dotfiles for this machine.
 - `git/.gitignore_global`
 - `git/.gitconfig`
 - `tmux/.tmux.conf`
+- `hypr/hyprland.conf`
+- `nvim/init.lua`
+- `nvim/lua/*`
+- `bin/cliphist-picker`
+- `ssh/config`
+- `kitty/kitty.conf`
 
 ## Apply
 ```bash
@@ -26,4 +32,8 @@ git config --global core.excludesfile ~/.gitignore_global
 
 ## Notes
 - Installs links with backup to `~/.dotfiles-backup/<timestamp>`.
-- This repo intentionally tracks Linux shell and prompt setup first.
+- Hyprland binds:
+  - `Print` full screenshot
+  - `Shift+Print` region screenshot
+  - `Super+Print` active window screenshot
+  - `Super+Shift+V` clipboard history picker

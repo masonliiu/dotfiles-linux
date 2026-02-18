@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CLIPHIST_BIN="$HOME/.local/bin/cliphist"
+
+if ! command -v wofi >/dev/null 2>&1; then
+  echo "wofi is required for cliphist-picker" >&2
+  exit 1
+fi
+
+if [ ! -x "$CLIPHIST_BIN" ]; then
+  echo "cliphist binary missing at $CLIPHIST_BIN" >&2
+  exit 1
+fi
+
+selection="$($CLIPHIST_BIN list | wofi --dmenu --prompt 'Clipboard' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+[ -z "$selection" ] && exit 0
+
+printf '%s' "$selection" | "$CLIPHIST_BIN" decode | wl-copy
