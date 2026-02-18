@@ -12,11 +12,11 @@ window#waybar {
 }
 
 window#waybar > box {
-  background: linear-gradient(90deg, rgba(13, 18, 28, 0.84), rgba(19, 27, 40, 0.84));
-  border: 1px solid rgba(112, 161, 255, 0.25);
-  border-radius: 16px;
-  padding: 6px 10px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
 }
 
 #workspaces,
