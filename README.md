@@ -16,6 +16,7 @@ Linux-focused dotfiles for this machine.
 - `nvim/init.lua`
 - `nvim/lua/*`
 - `bin/cliphist-picker`
+- `bin/screenshot`
 - `ssh/config`
 - `kitty/kitty.conf`
 
@@ -37,3 +38,9 @@ git config --global core.excludesfile ~/.gitignore_global
   - `Shift+Print` region screenshot
   - `Super+Print` active window screenshot
   - `Super+Shift+V` clipboard history picker
+- Screenshot backend:
+  - prefers `grim` + `slurp` on Hyprland
+  - falls back to `spectacle` if `grim/slurp` are missing
+- Kitty clipboard:
+  - `Ctrl+C` copy-or-interrupt
+  - `Ctrl+V` paste from system clipboard

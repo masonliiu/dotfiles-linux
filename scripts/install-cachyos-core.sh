@@ -9,6 +9,9 @@ sudo pacman -S --needed --noconfirm \
   bat \
   fd \
   jq \
+  grim \
+  slurp \
+  wl-clipboard \
   github-cli
 
 # Optional AUR packages

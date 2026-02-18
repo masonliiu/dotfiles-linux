@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mode="${1:-full}"
+shots_dir="$HOME/Pictures/Screenshots"
+mkdir -p "$shots_dir"
+outfile="$shots_dir/$(date +'%Y-%m-%d_%H-%M-%S').png"
+
+has() { command -v "$1" >/dev/null 2>&1; }
+
+notify_ok() {
+  if has notify-send; then
+    notify-send "Screenshot saved" "$outfile"
+  fi
+}
+
+if has grim && has slurp; then
+  case "$mode" in
+    full)
+      grim "$outfile"
+      notify_ok
+      ;;
+    region)
+      grim -g "$(slurp)" "$outfile"
+      notify_ok
+      ;;
+    window)
+      if has hyprctl && has jq; then
+        geom="$(hyprctl -j activewindow | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')"
+        grim -g "$geom" "$outfile"
+        notify_ok
+      else
+        grim "$outfile"
+        notify_ok
+      fi
+      ;;
+    *)
+      echo "Usage: screenshot [full|region|window]" >&2
+      exit 2
+      ;;
+  esac
+else
+  # Fallback while grim/slurp are unavailable on this machine.
+  case "$mode" in
+    full) spectacle -f ;;
+    region) spectacle -r ;;
+    window) spectacle -a ;;
+    *) echo "Usage: screenshot [full|region|window]" >&2; exit 2 ;;
+  esac
+fi

@@ -34,6 +34,7 @@ link_file "$REPO_DIR/hypr/hyprland.conf" "$HOME/.config/hypr/hyprland.conf"
 link_file "$REPO_DIR/nvim/init.lua" "$HOME/.config/nvim/init.lua"
 link_file "$REPO_DIR/nvim/lua" "$HOME/.config/nvim/lua"
 link_file "$REPO_DIR/bin/cliphist-picker" "$HOME/.local/bin/cliphist-picker"
+link_file "$REPO_DIR/bin/screenshot" "$HOME/.local/bin/screenshot"
 link_file "$REPO_DIR/ssh/config" "$HOME/.ssh/config"
 link_file "$REPO_DIR/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
 
