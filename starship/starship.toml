@@ -1,13 +1,14 @@
-add_newline = false
+add_newline = true
 
 format = """
-$directory$git_branch$git_status$nodejs$python$docker_context$cmd_duration$line_break$character
+$username$hostname$directory$git_branch$git_status$nodejs$python$docker_context$cmd_duration$line_break$status$jobs$time$battery$character
 """
 
 [directory]
 truncation_length = 3
 truncate_to_repo = false
 style = "bold cyan"
+read_only = " ro"
 
 [character]
 success_symbol = "[>](bold green)"
@@ -19,6 +20,7 @@ style = "bold yellow"
 
 [git_status]
 style = "bold red"
+format = '([$all_status$ahead_behind]($style) )'
 
 [nodejs]
 symbol = "node:"
@@ -35,3 +37,38 @@ style = "bold blue"
 [cmd_duration]
 min_time = 800
 format = " took [$duration](bold magenta)"
+
+[status]
+disabled = false
+format = ' [$symbol$status]($style)'
+symbol = "exit:"
+style = "bold red"
+
+[jobs]
+symbol = "jobs:"
+number_threshold = 1
+style = "bold yellow"
+format = ' [$symbol$number]($style)'
+
+[time]
+disabled = false
+time_format = "%H:%M"
+style = "bold white"
+format = ' [$time]($style)'
+
+[battery]
+disabled = false
+
+[[battery.display]]
+threshold = 15
+style = "bold red"
+
+[[battery.display]]
+threshold = 40
+style = "bold yellow"
+
+[username]
+show_always = false
+
+[hostname]
+disabled = true

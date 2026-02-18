@@ -9,6 +9,7 @@ Linux-focused dotfiles for this machine.
 - `fish/conf.d/10-dev-tools.fish`
 - `fish/conf.d/20-aliases.fish`
 - `fish/conf.d/30-interactive.fish`
+- `fish/conf.d/40-keybindings.fish`
 - `starship/starship.toml`
 - `git/.gitignore_global`
 - `git/.gitconfig`
@@ -67,3 +68,6 @@ git config --global core.excludesfile ~/.gitignore_global
   - `Ctrl+V` paste from system clipboard
 - Tmux:
   - prefix is `Ctrl+A`
+- Fish:
+  - vi keybindings enabled
+  - autosuggestion + fzf quick insert bindings
