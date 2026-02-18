@@ -18,5 +18,11 @@ if type -q fd
 end
 
 alias g='git'
+alias gs='git status -sb'
+alias gl='git log --oneline --graph --decorate --all'
+alias gp='git pull'
+alias gP='git push'
+alias gc='git commit'
+alias gca='git commit --amend'
 alias k='kubectl'
 alias d='docker'

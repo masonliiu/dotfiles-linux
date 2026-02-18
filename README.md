@@ -8,6 +8,7 @@ Linux-focused dotfiles for this machine.
 - `fish/config.fish`
 - `fish/conf.d/10-dev-tools.fish`
 - `fish/conf.d/20-aliases.fish`
+- `fish/conf.d/30-interactive.fish`
 - `starship/starship.toml`
 - `git/.gitignore_global`
 - `git/.gitconfig`
@@ -29,6 +30,11 @@ git config --global core.excludesfile ~/.gitignore_global
 ## Packages (CachyOS/Arch)
 ```bash
 ./scripts/install-cachyos-core.sh
+```
+
+## Cursor IDE
+```bash
+./scripts/install-cursor.sh
 ```
 
 ## Restore
@@ -59,3 +65,5 @@ git config --global core.excludesfile ~/.gitignore_global
 - Kitty clipboard:
   - `Ctrl+C` copy-or-interrupt
   - `Ctrl+V` paste from system clipboard
+- Tmux:
+  - prefix is `Ctrl+A`

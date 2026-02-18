@@ -1,7 +1,7 @@
 add_newline = false
 
 format = """
-$directory$git_branch$git_status$nodejs$python$docker_context$line_break$character
+$directory$git_branch$git_status$nodejs$python$docker_context$cmd_duration$line_break$character
 """
 
 [directory]
@@ -31,3 +31,7 @@ style = "bold blue"
 [docker_context]
 symbol = "docker:"
 style = "bold blue"
+
+[cmd_duration]
+min_time = 800
+format = " took [$duration](bold magenta)"
