@@ -13,10 +13,10 @@ window#waybar {
 }
 
 window#waybar > box {
-  background: transparent;
-  border: none;
+  background: rgba(20, 28, 46, 0.90);
+  border: 1px solid rgba(100, 148, 237, 0.25);
   border-radius: 0;
-  padding: 0 6px;
+  padding: 0 8px;
 }
 
 #workspaces,
