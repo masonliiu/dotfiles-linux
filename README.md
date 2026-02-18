@@ -7,8 +7,11 @@ Linux-focused dotfiles for this machine.
 - `zsh/.zshrc`
 - `fish/config.fish`
 - `fish/conf.d/10-dev-tools.fish`
+- `fish/conf.d/20-aliases.fish`
 - `starship/starship.toml`
 - `git/.gitignore_global`
+- `git/.gitconfig`
+- `tmux/.tmux.conf`
 
 ## Apply
 ```bash

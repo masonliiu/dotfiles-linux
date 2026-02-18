@@ -1,0 +1,15 @@
+[init]
+    defaultBranch = main
+[pull]
+    rebase = false
+[fetch]
+    prune = true
+[core]
+    editor = nvim
+    excludesfile = ~/.gitignore_global
+[alias]
+    st = status -sb
+    co = checkout
+    br = branch -vv
+    lg = log --oneline --graph --decorate --all
+    last = log -1 --stat
