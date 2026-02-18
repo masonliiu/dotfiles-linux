@@ -2,7 +2,7 @@
   "layer": "top",
   "position": "top",
   "height": 30,
-  "spacing": 8,
+  "spacing": 14,
   "margin-top": 0,
   "margin-left": 0,
   "margin-right": 0,
@@ -54,7 +54,7 @@
 
   "pulseaudio": {
     "scroll-step": 3,
-    "format": "{icon} {volume}%",
+    "format": "{icon}  {volume}%",
     "format-muted": "󰝟 mute",
     "format-icons": {
       "default": ["󰕿", "󰖀", "󰕾"]
@@ -64,20 +64,20 @@
 
   "network": {
     "interval": 3,
-    "format-wifi": "󰖩 {signalStrength}%",
-    "format-ethernet": "󰈀 lan",
-    "format-disconnected": "󰖪 offline",
+    "format-wifi": "󰖩  {signalStrength}%",
+    "format-ethernet": "󰈀  lan",
+    "format-disconnected": "󰖪  offline",
     "tooltip-format-wifi": "{essid} ({ipaddr})",
     "tooltip-format-ethernet": "{ifname} ({ipaddr})"
   },
 
   "cpu": {
-    "format": "󰍛 {usage}%",
+    "format": "󰍛  {usage}%",
     "interval": 2
   },
 
   "memory": {
-    "format": "󰘚 {}%",
+    "format": "󰘚  {}%",
     "interval": 2
   },
 
@@ -86,8 +86,8 @@
       "warning": 25,
       "critical": 12
     },
-    "format": "{icon} {capacity}%",
-    "format-charging": "󰂄 {capacity}%",
+    "format": "{icon}  {capacity}%",
+    "format-charging": "󰂄  {capacity}%",
     "format-plugged": "󰂄 ac",
     "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
   }
