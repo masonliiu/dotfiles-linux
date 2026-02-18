@@ -17,6 +17,7 @@ Linux-focused dotfiles for this machine.
 - `hypr/hyprland.conf`
 - `waybar/config`
 - `waybar/style.css`
+- `systemd/user/waybar.service`
 - `nvim/init.lua`
 - `nvim/lua/*`
 - `bin/cliphist-picker`
@@ -73,3 +74,5 @@ git config --global core.excludesfile ~/.gitignore_global
 - Fish:
   - vi keybindings enabled
   - autosuggestion + fzf quick insert bindings
+- Waybar:
+  - managed by `systemd --user` with auto-restart

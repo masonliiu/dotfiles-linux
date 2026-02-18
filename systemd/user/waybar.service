@@ -1,0 +1,13 @@
+[Unit]
+Description=Waybar
+After=graphical-session.target
+Wants=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/waybar -c %h/.config/waybar/config -s %h/.config/waybar/style.css
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=default.target

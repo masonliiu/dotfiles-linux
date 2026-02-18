@@ -34,12 +34,16 @@ link_file "$REPO_DIR/git/.gitconfig" "$HOME/.gitconfig"
 link_file "$REPO_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
 link_file "$REPO_DIR/hypr/hyprland.conf" "$HOME/.config/hypr/hyprland.conf"
 link_file "$REPO_DIR/waybar" "$HOME/.config/waybar"
+link_file "$REPO_DIR/systemd/user/waybar.service" "$HOME/.config/systemd/user/waybar.service"
 link_file "$REPO_DIR/nvim/init.lua" "$HOME/.config/nvim/init.lua"
 link_file "$REPO_DIR/nvim/lua" "$HOME/.config/nvim/lua"
 link_file "$REPO_DIR/bin/cliphist-picker" "$HOME/.local/bin/cliphist-picker"
 link_file "$REPO_DIR/bin/screenshot" "$HOME/.local/bin/screenshot"
 link_file "$REPO_DIR/ssh/config" "$HOME/.ssh/config"
 link_file "$REPO_DIR/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
+
+systemctl --user daemon-reload >/dev/null 2>&1 || true
+systemctl --user enable --now waybar.service >/dev/null 2>&1 || true
 
 echo "Dotfiles linked. Backups (if any): $HOME/.dotfiles-backup/$TS"
 echo "Set global gitignore: git config --global core.excludesfile ~/.gitignore_global"
