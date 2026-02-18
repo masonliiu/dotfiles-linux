@@ -1,0 +1,98 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 46,
+  "spacing": 10,
+  "margin-top": 8,
+  "margin-left": 12,
+  "margin-right": 12,
+
+  "modules-left": ["hyprland/workspaces", "hyprland/window"],
+  "modules-center": ["clock"],
+  "modules-right": ["pulseaudio", "network", "cpu", "memory", "battery"],
+
+  "hyprland/workspaces": {
+    "active-only": false,
+    "all-outputs": false,
+    "format": "{icon}",
+    "format-icons": {
+      "1": "I",
+      "2": "II",
+      "3": "III",
+      "4": "IV",
+      "5": "V",
+      "6": "VI",
+      "7": "VII",
+      "8": "VIII",
+      "9": "IX",
+      "10": "X",
+      "urgent": "!",
+      "default": "o"
+    },
+    "persistent-workspaces": {
+      "*": 6
+    }
+  },
+
+  "hyprland/window": {
+    "format": "{title}",
+    "max-length": 52,
+    "separate-outputs": true
+  },
+
+  "clock": {
+    "interval": 1,
+    "format": "{:%a %d %b  %H:%M}",
+    "tooltip-format": "<tt>{calendar}</tt>",
+    "calendar": {
+      "mode": "month",
+      "mode-mon-col": 3,
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#7aa2f7'><b>{}</b></span>",
+        "days": "<span color='#c0caf5'>{}</span>",
+        "weeks": "<span color='#7dcfff'>{}</span>",
+        "weekdays": "<span color='#bb9af7'><b>{}</b></span>",
+        "today": "<span color='#f7768e'><b>{}</b></span>"
+      }
+    }
+  },
+
+  "pulseaudio": {
+    "scroll-step": 3,
+    "format": "vol {volume}%",
+    "format-muted": "vol mute",
+    "on-click": "pavucontrol"
+  },
+
+  "network": {
+    "interval": 3,
+    "format-wifi": "wifi {signalStrength}%",
+    "format-ethernet": "lan",
+    "format-disconnected": "offline",
+    "tooltip-format-wifi": "{essid} ({ipaddr})",
+    "tooltip-format-ethernet": "{ifname} ({ipaddr})"
+  },
+
+  "cpu": {
+    "format": "cpu {usage}%",
+    "interval": 2
+  },
+
+  "memory": {
+    "format": "mem {}%",
+    "interval": 2
+  },
+
+  "battery": {
+    "states": {
+      "warning": 25,
+      "critical": 12
+    },
+    "format": "bat {capacity}%",
+    "format-charging": "bat +{capacity}%",
+    "format-plugged": "bat ac",
+    "tooltip-format": "{timeTo} remaining"
+  }
+}

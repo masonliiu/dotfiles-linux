@@ -15,6 +15,8 @@ Linux-focused dotfiles for this machine.
 - `git/.gitconfig`
 - `tmux/.tmux.conf`
 - `hypr/hyprland.conf`
+- `waybar/config`
+- `waybar/style.css`
 - `nvim/init.lua`
 - `nvim/lua/*`
 - `bin/cliphist-picker`
