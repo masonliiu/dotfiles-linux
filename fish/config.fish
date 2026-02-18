@@ -1,4 +1,7 @@
 source /usr/share/cachyos-fish-config/cachyos-config.fish
+set -gx PATH ~/.npm-global/bin $PATH
+set -gx EDITOR nvim
+set -gx VISUAL nvim
 
 # overwrite greeting
 # potentially disabling fastfetch
