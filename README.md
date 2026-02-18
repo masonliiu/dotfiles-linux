@@ -31,6 +31,22 @@ git config --global core.excludesfile ~/.gitignore_global
 ./scripts/install-cachyos-core.sh
 ```
 
+## Restore
+```bash
+./scripts/restore.sh
+```
+
+## Verify
+```bash
+./scripts/doctor.sh
+```
+
+## Package Snapshot
+```bash
+./scripts/snapshot-packages.sh
+```
+- writes package/state files into `snapshots/`
+
 ## Notes
 - Installs links with backup to `~/.dotfiles-backup/<timestamp>`.
 - Hyprland binds:
