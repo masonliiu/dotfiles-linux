@@ -13,3 +13,6 @@
     br = branch -vv
     lg = log --oneline --graph --decorate --all
     last = log -1 --stat
+[user]
+	name = masonliiu
+	email = 138553405+masonliiu@users.noreply.github.com
