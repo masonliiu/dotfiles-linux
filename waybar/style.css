@@ -8,12 +8,12 @@
 
 window#waybar {
   background: transparent;
-  color: #E8E0FF;
+  color: #D9E7FF;
   border: none;
 }
 
 window#waybar > box {
-  background: rgba(21, 18, 42, 0.94);
+  background: rgba(17, 26, 44, 0.94);
   border: none;
   border-radius: 0;
   padding: 0;
@@ -32,7 +32,7 @@ window#waybar > box {
   border-radius: 0;
   margin: 0 2px;
   padding: 0 8px;
-  color: #E8E0FF;
+  color: #D9E7FF;
 }
 
 #workspaces {
@@ -40,49 +40,49 @@ window#waybar > box {
 }
 
 #workspaces button {
-  color: #A595C9;
+  color: #7F96BA;
   padding: 0 5px;
   margin: 0 1px;
   min-width: 0;
 }
 
 #workspaces button.active {
-  color: #B084FF;
+  color: #5EA1FF;
   font-weight: 700;
 }
 
 #workspaces button:hover {
-  color: #C8A2FF;
+  color: #6EE7F2;
   background: transparent;
 }
 
 #window {
-  color: #A595C9;
+  color: #7F96BA;
   font-weight: 600;
 }
 
 #clock {
-  color: #B084FF;
+  color: #5EA1FF;
   font-weight: 700;
   letter-spacing: 0.2px;
 }
 
-#network { color: #B084FF; }
-#pulseaudio { color: #7EE0B5; }
-#cpu { color: #C8A2FF; }
-#memory { color: #C8A2FF; }
-#battery { color: #7EE0B5; }
+#network { color: #5EA1FF; }
+#pulseaudio { color: #78D39B; }
+#cpu { color: #6EE7F2; }
+#memory { color: #6EE7F2; }
+#battery { color: #78D39B; }
 
-#battery.warning { color: #F2C27B; }
-#battery.critical { color: #F38BA8; }
+#battery.warning { color: #F5C46B; }
+#battery.critical { color: #F27C8A; }
 
 tooltip {
-  background: #15122A;
-  border: 1px solid #B084FF;
+  background: #111A2C;
+  border: 1px solid #5EA1FF;
   border-radius: 0;
 }
 
 tooltip label {
-  color: #E8E0FF;
+  color: #D9E7FF;
   padding: 6px;
 }

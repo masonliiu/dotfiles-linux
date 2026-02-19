@@ -114,3 +114,4 @@ git config --global core.excludesfile ~/.gitignore_global
   - `bootstrap.sh` links `~/.config/hypr/host.conf`
   - if `host/<hostname>/hypr.conf` exists, it is used
   - otherwise `host/default/hypr.conf` is used
+  - `host/masonlegion/hypr.conf` pins Hyprland DRM device to Intel iGPU for stability
