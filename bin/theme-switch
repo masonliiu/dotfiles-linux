@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
+REPO_DIR="$(cd "$(dirname "$SCRIPT_PATH")/.." && pwd)"
+THEMES_DIR="$REPO_DIR/themes"
+STATE_DIR="$HOME/.config/theme-switch"
+CURRENT_FILE="$STATE_DIR/current"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  theme-switch --list
+  theme-switch <theme-name>
+
+Examples:
+  theme-switch midnight-sapphire
+  theme-switch --list
+EOF
+}
+
+list_themes() {
+  find "$THEMES_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
+}
+
+if [[ "${1:-}" == "--list" ]]; then
+  list_themes
+  exit 0
+fi
+
+if [[ $# -ne 1 ]]; then
+  usage
+  exit 1
+fi
+
+THEME="$1"
+THEME_DIR="$THEMES_DIR/$THEME"
+if [[ ! -d "$THEME_DIR" ]]; then
+  echo "Theme not found: $THEME"
+  echo "Available:"
+  list_themes | sed 's/^/  - /'
+  exit 1
+fi
+
+mkdir -p "$STATE_DIR"
+
+cp "$THEME_DIR/waybar.css" "$REPO_DIR/waybar/style.css"
+cp "$THEME_DIR/kitty.conf" "$REPO_DIR/kitty/kitty.conf"
+cp "$THEME_DIR/nvim-theme.lua" "$REPO_DIR/nvim/lua/config/theme.lua"
+cp "$THEME_DIR/hypr.conf" "$HOME/.config/hypr/theme.conf"
+printf '%s\n' "$THEME" > "$CURRENT_FILE"
+
+WALLPAPER=""
+if [[ -f "$THEME_DIR/theme.env" ]]; then
+  # shellcheck disable=SC1090
+  source "$THEME_DIR/theme.env"
+fi
+
+if command -v systemctl >/dev/null 2>&1; then
+  systemctl --user restart waybar.service >/dev/null 2>&1 || true
+fi
+
+if command -v hyprctl >/dev/null 2>&1; then
+  hyprctl reload >/dev/null 2>&1 || true
+fi
+
+if pgrep -x kitty >/dev/null 2>&1; then
+  pkill -USR1 -x kitty >/dev/null 2>&1 || true
+fi
+
+apply_wallpaper() {
+  local img="$1"
+  if [[ ! -f "$img" ]]; then
+    echo "Wallpaper file not found, skipped: $img"
+    return
+  fi
+
+  if command -v swww >/dev/null 2>&1; then
+    if ! pgrep -x swww-daemon >/dev/null 2>&1; then
+      nohup swww-daemon >/tmp/swww-daemon.log 2>&1 &
+      sleep 0.2
+    fi
+    swww img "$img" --transition-type grow --transition-duration 0.6 >/dev/null 2>&1 || true
+    return
+  fi
+
+  if command -v swaybg >/dev/null 2>&1; then
+    pkill -x swaybg >/dev/null 2>&1 || true
+    nohup swaybg -i "$img" -m fill >/tmp/swaybg.log 2>&1 &
+    return
+  fi
+
+  echo "No wallpaper backend found (install swww or swaybg)."
+}
+
+if [[ -n "${WALLPAPER:-}" ]]; then
+  apply_wallpaper "$WALLPAPER"
+fi
+
+echo "Applied theme: $THEME"

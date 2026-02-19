@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+scope="${1:-full}"
+rec="$HOME/.local/bin/record-screen"
+
+if [[ "$scope" != "full" && "$scope" != "region" ]]; then
+  echo "Usage: record-screen-picker [full|region]"
+  exit 1
+fi
+
+if ! command -v wofi >/dev/null 2>&1; then
+  # Fallback to sane default if chooser is unavailable.
+  if [[ "$scope" == "region" ]]; then
+    exec "$rec" share-region
+  fi
+  exec "$rec" share
+fi
+
+prompt="Record ${scope}"
+choice="$(
+  printf 'share\nquality\nstop\n' | wofi --dmenu --prompt "$prompt" --insensitive
+)"
+
+case "${choice:-}" in
+  share)
+    if [[ "$scope" == "region" ]]; then
+      exec "$rec" share-region
+    fi
+    exec "$rec" share
+    ;;
+  quality)
+    if [[ "$scope" == "region" ]]; then
+      exec "$rec" quality-region
+    fi
+    exec "$rec" quality
+    ;;
+  stop)
+    exec "$rec" stop
+    ;;
+  *)
+    exit 0
+    ;;
+esac

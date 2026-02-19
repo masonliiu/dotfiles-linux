@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mode="${1:-toggle}"
+profile="${2:-share}"
+out_dir="$HOME/Videos/Recordings"
+video_codec=""
+audio_codec=""
+pixel_format=""
+fps=""
+crf=""
+preset=""
+ext=""
+mkdir -p "$out_dir"
+
+notify() {
+  if command -v notify-send >/dev/null 2>&1; then
+    notify-send "Screen Recorder" "$1"
+  fi
+}
+
+is_recording() {
+  pgrep -x wf-recorder >/dev/null 2>&1
+}
+
+stop_recording() {
+  if is_recording; then
+    pkill -INT -x wf-recorder || true
+    notify "Recording stopped"
+  fi
+}
+
+set_profile() {
+  case "$profile" in
+    share)
+      ext="mp4"
+      video_codec="${WF_RECORDER_VIDEO_CODEC:-libx264}"
+      audio_codec="${WF_RECORDER_AUDIO_CODEC:-aac}"
+      pixel_format="${WF_RECORDER_PIXEL_FORMAT:-yuv420p}"
+      fps="${WF_RECORDER_FPS:-120}"
+      crf="${WF_RECORDER_CRF:-16}"
+      preset="${WF_RECORDER_PRESET:-slow}"
+      ;;
+    quality)
+      ext="mkv"
+      video_codec="${WF_RECORDER_VIDEO_CODEC:-libx264rgb}"
+      audio_codec="${WF_RECORDER_AUDIO_CODEC:-aac}"
+      pixel_format="${WF_RECORDER_PIXEL_FORMAT:-rgb0}"
+      fps="${WF_RECORDER_FPS:-120}"
+      crf="${WF_RECORDER_CRF:-0}"
+      preset="${WF_RECORDER_PRESET:-ultrafast}"
+      ;;
+    *)
+      echo "Invalid profile: $profile"
+      echo "Profiles: share | quality"
+      exit 1
+      ;;
+  esac
+}
+
+start_full() {
+  local out="$out_dir/recording-${profile}-$(date +%Y%m%d-%H%M%S).${ext}"
+  notify "Recording full (${profile}, ${fps}fps, ${pixel_format})"
+  nohup wf-recorder -a -r "$fps" -c "$video_codec" -C "$audio_codec" -x "$pixel_format" -p "preset=${preset}" -p "crf=${crf}" -f "$out" >/tmp/wf-recorder.log 2>&1 &
+}
+
+start_region() {
+  local out="$out_dir/recording-region-${profile}-$(date +%Y%m%d-%H%M%S).${ext}"
+  local geo
+  geo="$(slurp)" || exit 0
+  notify "Recording region (${profile}, ${fps}fps, ${pixel_format})"
+  nohup wf-recorder -a -g "$geo" -r "$fps" -c "$video_codec" -C "$audio_codec" -x "$pixel_format" -p "preset=${preset}" -p "crf=${crf}" -f "$out" >/tmp/wf-recorder.log 2>&1 &
+}
+
+set_profile
+
+case "$mode" in
+  toggle)
+    if is_recording; then
+      stop_recording
+    else
+      start_full
+    fi
+    ;;
+  full)
+    stop_recording
+    start_full
+    ;;
+  region)
+    stop_recording
+    start_region
+    ;;
+  share)
+    profile="share"
+    set_profile
+    stop_recording
+    start_full
+    ;;
+  quality)
+    profile="quality"
+    set_profile
+    stop_recording
+    start_full
+    ;;
+  share-region)
+    profile="share"
+    set_profile
+    stop_recording
+    start_region
+    ;;
+  quality-region)
+    profile="quality"
+    set_profile
+    stop_recording
+    start_region
+    ;;
+  stop)
+    stop_recording
+    ;;
+  *)
+    echo "Usage: record-screen [toggle|full|region|share|quality|share-region|quality-region|stop] [share|quality]"
+    exit 1
+    ;;
+esac

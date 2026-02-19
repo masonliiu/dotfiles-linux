@@ -15,6 +15,7 @@ Linux-focused dotfiles for this machine.
 - `git/.gitconfig`
 - `tmux/.tmux.conf`
 - `hypr/hyprland.conf`
+- `hypr/theme.conf`
 - `waybar/config`
 - `waybar/style.css`
 - `systemd/user/waybar.service`
@@ -22,8 +23,13 @@ Linux-focused dotfiles for this machine.
 - `nvim/lua/*`
 - `bin/cliphist-picker`
 - `bin/screenshot`
+- `bin/record-screen`
+- `bin/record-screen-picker`
+- `bin/theme-switch`
+- `bin/theme-cycle`
 - `ssh/config`
 - `kitty/kitty.conf`
+- `themes/*`
 
 ## Apply
 ```bash
@@ -63,9 +69,26 @@ git config --global core.excludesfile ~/.gitignore_global
   - `Print` full screenshot
   - `Shift+Print` region screenshot
   - `Super+Print` active window screenshot
+  - `Super+Alt+R` recording chooser (share/quality/stop, full screen)
+  - `Super+Shift+R` recording chooser (share/quality/stop, region)
+  - `Super+Alt+S` stop recording
   - `Super+Shift+V` clipboard history picker
+  - `Super+F1` `midnight-sapphire`
+  - `Super+F2` `purple-midnight`
+  - `Super+F3` `obsidian-gold`
+  - `Super+F4` `deep-teal-studio`
+  - `Super+F5` cycle to next theme
 - Screenshot backend:
   - requires `grim` + `slurp` on Hyprland
+- Screen recording backend:
+  - requires `wf-recorder` (+ `slurp` for region)
+  - profiles:
+    - `share` (default): MP4, 120fps, iOS/mac compatible
+    - `quality`: MKV RGB master capture (higher fidelity)
+  - examples:
+    - `record-screen share`
+    - `record-screen quality`
+    - `record-screen quality-region`
 - Kitty clipboard:
   - `Ctrl+C` copy-or-interrupt
   - `Ctrl+V` paste from system clipboard
@@ -76,3 +99,13 @@ git config --global core.excludesfile ~/.gitignore_global
   - autosuggestion + fzf quick insert bindings
 - Waybar:
   - managed by `systemd --user` with auto-restart
+- Theme switching:
+  - `~/.local/bin/theme-switch --list`
+  - `~/.local/bin/theme-switch <theme-name>`
+  - updates: `waybar/style.css`, `kitty/kitty.conf`, `nvim/lua/config/theme.lua`, `~/.config/hypr/theme.conf`
+  - optional wallpaper path per theme in `themes/<name>/theme.env`
+  - default wallpaper filenames expected:
+    - `~/Pictures/Wallpapers/midnight-sapphire.jpg`
+    - `~/Pictures/Wallpapers/purple-midnight.jpg`
+    - `~/Pictures/Wallpapers/obsidian-gold.jpg`
+    - `~/Pictures/Wallpapers/deep-teal-studio.jpg`
