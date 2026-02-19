@@ -16,6 +16,7 @@ Linux-focused dotfiles for this machine.
 - `tmux/.tmux.conf`
 - `hypr/hyprland.conf`
 - `hypr/theme.conf`
+- `host/default/hypr.conf`
 - `waybar/config`
 - `waybar/style.css`
 - `systemd/user/waybar.service`
@@ -109,3 +110,7 @@ git config --global core.excludesfile ~/.gitignore_global
     - `~/Pictures/Wallpapers/purple-midnight.jpg`
     - `~/Pictures/Wallpapers/obsidian-gold.jpg`
     - `~/Pictures/Wallpapers/deep-teal-studio.jpg`
+- Host overrides:
+  - `bootstrap.sh` links `~/.config/hypr/host.conf`
+  - if `host/<hostname>/hypr.conf` exists, it is used
+  - otherwise `host/default/hypr.conf` is used

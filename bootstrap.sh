@@ -3,6 +3,7 @@ set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TS="$(date +%Y%m%d-%H%M%S)"
+HOST_SHORT="$(hostname -s 2>/dev/null || hostname)"
 
 backup_file() {
   local src="$1"
@@ -34,6 +35,11 @@ link_file "$REPO_DIR/git/.gitconfig" "$HOME/.gitconfig"
 link_file "$REPO_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
 link_file "$REPO_DIR/hypr/hyprland.conf" "$HOME/.config/hypr/hyprland.conf"
 link_file "$REPO_DIR/hypr/theme.conf" "$HOME/.config/hypr/theme.conf"
+if [ -f "$REPO_DIR/host/$HOST_SHORT/hypr.conf" ]; then
+  link_file "$REPO_DIR/host/$HOST_SHORT/hypr.conf" "$HOME/.config/hypr/host.conf"
+else
+  link_file "$REPO_DIR/host/default/hypr.conf" "$HOME/.config/hypr/host.conf"
+fi
 link_file "$REPO_DIR/waybar" "$HOME/.config/waybar"
 link_file "$REPO_DIR/systemd/user/waybar.service" "$HOME/.config/systemd/user/waybar.service"
 link_file "$REPO_DIR/nvim/init.lua" "$HOME/.config/nvim/init.lua"

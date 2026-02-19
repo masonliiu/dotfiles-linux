@@ -27,18 +27,28 @@ check_cmd wl-copy "wl-copy present"
 check_cmd wl-paste "wl-paste present"
 check_cmd grim "grim present"
 check_cmd slurp "slurp present"
+check_cmd wf-recorder "wf-recorder present"
+check_cmd swww "swww present"
 check_cmd jq "jq present"
 check_cmd hyprctl "hyprctl present"
 check_cmd ssh "ssh present"
+check_cmd ffmpeg "ffmpeg present"
+check_cmd wofi "wofi present"
 
 echo "== Dotfile links =="
 for p in \
   "$HOME/.config/hypr/hyprland.conf" \
+  "$HOME/.config/hypr/theme.conf" \
+  "$HOME/.config/hypr/host.conf" \
   "$HOME/.config/kitty/kitty.conf" \
   "$HOME/.tmux.conf" \
   "$HOME/.config/nvim/init.lua" \
   "$HOME/.local/bin/screenshot" \
-  "$HOME/.local/bin/cliphist-picker"
+  "$HOME/.local/bin/cliphist-picker" \
+  "$HOME/.local/bin/record-screen" \
+  "$HOME/.local/bin/record-screen-picker" \
+  "$HOME/.local/bin/theme-switch" \
+  "$HOME/.local/bin/theme-cycle"
 do
   if [ -L "$p" ]; then
     pass "symlink exists: $p"
@@ -48,11 +58,35 @@ do
 done
 
 echo "== Runtime checks =="
+if systemctl --user is-active waybar.service >/dev/null 2>&1; then
+  pass "waybar.service active"
+else
+  warn "waybar.service inactive"
+fi
+
 if pgrep -af 'wl-paste --type text --watch .*cliphist store' >/dev/null 2>&1 && \
    pgrep -af 'wl-paste --type image --watch .*cliphist store' >/dev/null 2>&1; then
   pass "cliphist watchers running"
 else
   warn "cliphist watchers not detected (restart Hyprland session or run watchers manually)"
+fi
+
+if "$HOME/.local/bin/theme-switch" --list >/dev/null 2>&1; then
+  pass "theme-switch runnable"
+else
+  warn "theme-switch failed"
+fi
+
+if [ -f "$HOME/.config/theme-switch/current" ]; then
+  pass "current theme state file exists"
+else
+  warn "no current theme state file (~/.config/theme-switch/current)"
+fi
+
+if pgrep -x swww-daemon >/dev/null 2>&1; then
+  pass "swww-daemon running"
+else
+  warn "swww-daemon not running (theme switch will start it on demand)"
 fi
 
 if nvim --headless '+qall' >/dev/null 2>&1; then
