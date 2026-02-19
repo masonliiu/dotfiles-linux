@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if pgrep -x wlogout >/dev/null 2>&1; then
+  # Prevent stacked overlays; keep at most one instance.
+  exit 0
+fi
+
+if command -v wlogout >/dev/null 2>&1; then
+  # Force Wayland path; some setups export DISPLAY=:0 and GTK picks X11.
+  exec env -u DISPLAY GDK_BACKEND=wayland wlogout -b 5 -n -c 20 -r 20 -T 280 -B 280 -L 24 -R 24
+fi
+
+if command -v hyprshutdown >/dev/null 2>&1; then
+  exec hyprshutdown
+fi
+
+exec hyprctl dispatch exit

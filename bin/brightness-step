@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DEVICE="${BRIGHTNESS_DEVICE:-intel_backlight}"
+STEP_PCT="${BRIGHTNESS_STEP_PCT:-15}"
+MIN_PCT="${BRIGHTNESS_MIN_PCT:-0}"
+DPMS_ON_ZERO="${BRIGHTNESS_DPMS_ON_ZERO:-1}"
+
+if [[ $# -ne 1 || ( "$1" != "up" && "$1" != "down" ) ]]; then
+  echo "Usage: brightness-step <up|down>" >&2
+  exit 2
+fi
+
+cur="$(brightnessctl -d "$DEVICE" g)"
+max="$(brightnessctl -d "$DEVICE" m)"
+step="$(( max * STEP_PCT / 100 ))"
+min="$(( max * MIN_PCT / 100 ))"
+
+# Avoid no-op on small ranges.
+if (( step < 1 )); then
+  step=1
+fi
+if [[ "$1" == "up" ]]; then
+  # Wake panel first in case it was hard-switched off at 0%.
+  if command -v hyprctl >/dev/null 2>&1; then
+    hyprctl dispatch dpms on >/dev/null 2>&1 || true
+  fi
+  new="$(( cur + step ))"
+  if (( new > max )); then
+    new="$max"
+  fi
+else
+  new="$(( cur - step ))"
+  if (( new < min )); then
+    if (( DPMS_ON_ZERO == 1 )) && command -v hyprctl >/dev/null 2>&1; then
+      # Simulate true "display off" when stepping below 0/min.
+      hyprctl dispatch dpms off >/dev/null 2>&1 || true
+    fi
+    new="$min"
+  fi
+fi
+
+if ! brightnessctl -d "$DEVICE" set "$new" >/dev/null 2>&1; then
+  # Some panels reject 0; fall back to 1.
+  if (( new == 0 )); then
+    brightnessctl -d "$DEVICE" set 1 >/dev/null 2>&1 || true
+  fi
+fi
