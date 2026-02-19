@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+APPDIR="$HOME/.local/opt/unityhub/unityhub-appdir"
+# Use integer scale by default for crisp XWayland rendering.
+SCALE="${UNITYHUB_SCALE:-1}"
+
+exec env APPDIR="$APPDIR" QT_QPA_PLATFORM=xcb "$APPDIR/AppRun" \
+  --high-dpi-support=1 --force-device-scale-factor="$SCALE" "$@"

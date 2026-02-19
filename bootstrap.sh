@@ -50,6 +50,9 @@ link_file "$REPO_DIR/bin/record-screen" "$HOME/.local/bin/record-screen"
 link_file "$REPO_DIR/bin/record-screen-picker" "$HOME/.local/bin/record-screen-picker"
 link_file "$REPO_DIR/bin/theme-switch" "$HOME/.local/bin/theme-switch"
 link_file "$REPO_DIR/bin/theme-cycle" "$HOME/.local/bin/theme-cycle"
+if [ -f "$REPO_DIR/bin/unityhub-x11" ]; then
+  link_file "$REPO_DIR/bin/unityhub-x11" "$HOME/.local/bin/unityhub-x11"
+fi
 link_file "$REPO_DIR/ssh/config" "$HOME/.ssh/config"
 link_file "$REPO_DIR/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
 
