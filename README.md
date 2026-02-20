@@ -78,7 +78,8 @@ git config --global core.excludesfile ~/.gitignore_global
   - `Super+F2` `purple-midnight`
   - `Super+F3` `obsidian-gold`
   - `Super+F4` `deep-teal-studio`
-  - `Super+F5` cycle to next theme
+  - `Super+F5` switch to black-white
+  - `Super+F6` switch to red-city
 - Screenshot backend:
   - requires `grim` + `slurp` on Hyprland
 - Screen recording backend:
@@ -110,6 +111,8 @@ git config --global core.excludesfile ~/.gitignore_global
     - `~/Pictures/Wallpapers/purple-midnight.jpg`
     - `~/Pictures/Wallpapers/obsidian-gold.jpg`
     - `~/Pictures/Wallpapers/deep-teal-studio.jpg`
+    - `~/Pictures/Wallpapers/black-white.jpg`
+    - `~/Pictures/Wallpapers/red-city.jpg`
 - Host overrides:
   - `bootstrap.sh` links `~/.config/hypr/host.conf`
   - if `host/<hostname>/hypr.conf` exists, it is used

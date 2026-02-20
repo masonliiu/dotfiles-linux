@@ -56,6 +56,7 @@ if [[ -f "$THEME_DIR/theme.env" ]]; then
   source "$THEME_DIR/theme.env"
 fi
 
+# Full refresh so every surface picks up theme changes immediately.
 if command -v systemctl >/dev/null 2>&1; then
   systemctl --user restart waybar.service >/dev/null 2>&1 || true
 fi
@@ -80,7 +81,11 @@ apply_wallpaper() {
       nohup swww-daemon >/tmp/swww-daemon.log 2>&1 &
       sleep 0.2
     fi
-    swww img "$img" --transition-type grow --transition-duration 0.6 >/dev/null 2>&1 || true
+    swww img "$img" \
+      --transition-type wipe \
+      --transition-angle 45 \
+      --transition-duration 0.9 \
+      --transition-fps 60 >/dev/null 2>&1 || true
     return
   fi
 
