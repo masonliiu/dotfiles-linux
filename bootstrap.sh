@@ -41,6 +41,7 @@ else
   link_file "$REPO_DIR/host/default/hypr.conf" "$HOME/.config/hypr/host.conf"
 fi
 link_file "$REPO_DIR/waybar" "$HOME/.config/waybar"
+link_file "$REPO_DIR/wofi" "$HOME/.config/wofi"
 link_file "$REPO_DIR/wlogout" "$HOME/.config/wlogout"
 link_file "$REPO_DIR/systemd/user/waybar.service" "$HOME/.config/systemd/user/waybar.service"
 link_file "$REPO_DIR/nvim/init.lua" "$HOME/.config/nvim/init.lua"
@@ -49,10 +50,12 @@ link_file "$REPO_DIR/bin/cliphist-picker" "$HOME/.local/bin/cliphist-picker"
 link_file "$REPO_DIR/bin/screenshot" "$HOME/.local/bin/screenshot"
 link_file "$REPO_DIR/bin/record-screen" "$HOME/.local/bin/record-screen"
 link_file "$REPO_DIR/bin/record-screen-picker" "$HOME/.local/bin/record-screen-picker"
+link_file "$REPO_DIR/bin/wofi-launcher" "$HOME/.local/bin/wofi-launcher"
 link_file "$REPO_DIR/bin/brightness-step" "$HOME/.local/bin/brightness-step"
 link_file "$REPO_DIR/bin/power-menu" "$HOME/.local/bin/power-menu"
 link_file "$REPO_DIR/bin/theme-switch" "$HOME/.local/bin/theme-switch"
 link_file "$REPO_DIR/bin/theme-cycle" "$HOME/.local/bin/theme-cycle"
+link_file "$REPO_DIR/bin/waybar-layout-switch" "$HOME/.local/bin/waybar-layout-switch"
 if [ -f "$REPO_DIR/bin/unityhub-x11" ]; then
   link_file "$REPO_DIR/bin/unityhub-x11" "$HOME/.local/bin/unityhub-x11"
 fi
