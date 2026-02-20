@@ -80,8 +80,6 @@ git config --global core.excludesfile ~/.gitignore_global
   - `Super+F4` `deep-teal-studio`
   - `Super+F5` switch to black-white
   - `Super+F6` switch to red-city
-  - `Super+Shift+F1` restore saved Waybar layout (`shift-f1-current`)
-  - `Super+Shift+F2` switch to `clean-v1` Waybar layout and snapshot current layout to `shift-f1-current`
 - Screenshot backend:
   - requires `grim` + `slurp` on Hyprland
 - Screen recording backend:
@@ -103,14 +101,10 @@ git config --global core.excludesfile ~/.gitignore_global
   - autosuggestion + fzf quick insert bindings
 - Waybar:
   - managed by `systemd --user` with auto-restart
-  - layout presets:
-    - `~/.local/bin/waybar-layout-switch --list`
-    - `~/.local/bin/waybar-layout-switch clean-v1 --save-slot shift-f1-current`
-    - `~/.local/bin/waybar-layout-switch shift-f1-current`
 - Theme switching:
   - `~/.local/bin/theme-switch --list`
   - `~/.local/bin/theme-switch <theme-name>`
-  - updates: `waybar/style.css`, `wofi/style.css`, `kitty/kitty.conf`, `nvim/lua/config/theme.lua`, `~/.config/hypr/theme.conf`
+  - updates: `waybar/style.css`, `kitty/kitty.conf`, `nvim/lua/config/theme.lua`, `~/.config/hypr/theme.conf`
   - optional wallpaper path per theme in `themes/<name>/theme.env`
   - default wallpaper filenames expected:
     - `~/Pictures/Wallpapers/midnight-sapphire.jpg`
