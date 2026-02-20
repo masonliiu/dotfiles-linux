@@ -44,30 +44,7 @@ fi
 
 mkdir -p "$STATE_DIR"
 
-REOPEN_WOFI=0
-if pgrep -x wofi >/dev/null 2>&1; then
-  REOPEN_WOFI=1
-  pkill -x wofi >/dev/null 2>&1 || true
-  # Let wlroots release grabs before reloading compositor/apps.
-  sleep 0.05
-fi
-
-USE_GLOBAL_SWIPE=0
-SWIPE_SHOT="/tmp/theme-switch-old-${UID}.png"
-if command -v grim >/dev/null 2>&1 && [[ -x "$REPO_DIR/bin/theme-swipe-overlay.py" ]]; then
-  if grim "$SWIPE_SHOT" >/dev/null 2>&1; then
-    pkill -f "theme-swipe-overlay.py" >/dev/null 2>&1 || true
-    nohup "$REPO_DIR/bin/theme-swipe-overlay.py" \
-      --image "$SWIPE_SHOT" \
-      --duration 0.85 \
-      --delay 0.10 \
-      --cleanup "$SWIPE_SHOT" >/tmp/theme-swipe.log 2>&1 &
-    USE_GLOBAL_SWIPE=1
-  fi
-fi
-
 cp "$THEME_DIR/waybar.css" "$REPO_DIR/waybar/style.css"
-cp "$THEME_DIR/wofi.css" "$REPO_DIR/wofi/style.css"
 cp "$THEME_DIR/kitty.conf" "$REPO_DIR/kitty/kitty.conf"
 cp "$THEME_DIR/nvim-theme.lua" "$REPO_DIR/nvim/lua/config/theme.lua"
 cp "$THEME_DIR/hypr.conf" "$HOME/.config/hypr/theme.conf"
@@ -79,10 +56,8 @@ if [[ -f "$THEME_DIR/theme.env" ]]; then
   source "$THEME_DIR/theme.env"
 fi
 
-# Reload waybar in-place to avoid the "bar disappears -> windows bounce" effect.
-if pgrep -x waybar >/dev/null 2>&1; then
-  pkill -USR2 -x waybar >/dev/null 2>&1 || true
-elif command -v systemctl >/dev/null 2>&1; then
+# Full refresh so every surface picks up theme changes immediately.
+if command -v systemctl >/dev/null 2>&1; then
   systemctl --user restart waybar.service >/dev/null 2>&1 || true
 fi
 
@@ -106,15 +81,11 @@ apply_wallpaper() {
       nohup swww-daemon >/tmp/swww-daemon.log 2>&1 &
       sleep 0.2
     fi
-    if [[ "$USE_GLOBAL_SWIPE" -eq 1 ]]; then
-      swww img "$img" --transition-type none >/dev/null 2>&1 || true
-    else
-      swww img "$img" \
-        --transition-type wipe \
-        --transition-angle 45 \
-        --transition-duration 0.9 \
-        --transition-fps 60 >/dev/null 2>&1 || true
-    fi
+    swww img "$img" \
+      --transition-type wipe \
+      --transition-angle 45 \
+      --transition-duration 0.9 \
+      --transition-fps 60 >/dev/null 2>&1 || true
     return
   fi
 
@@ -129,10 +100,6 @@ apply_wallpaper() {
 
 if [[ -n "${WALLPAPER:-}" ]]; then
   apply_wallpaper "$WALLPAPER"
-fi
-
-if [[ "$REOPEN_WOFI" -eq 1 ]]; then
-  nohup wofi --show drun --conf "$HOME/.config/wofi/config" --style "$HOME/.config/wofi/style.css" >/tmp/wofi.log 2>&1 &
 fi
 
 echo "Applied theme: $THEME"
