@@ -57,18 +57,7 @@ if [[ -f "$THEME_DIR/theme.env" ]]; then
 fi
 
 # Full refresh so every surface picks up theme changes immediately.
-if command -v systemctl >/dev/null 2>&1; then
-  systemctl --user restart waybar.service >/dev/null 2>&1 || true
-fi
-
-if command -v hyprctl >/dev/null 2>&1; then
-  hyprctl reload >/dev/null 2>&1 || true
-fi
-
-if pgrep -x kitty >/dev/null 2>&1; then
-  pkill -USR1 -x kitty >/dev/null 2>&1 || true
-fi
-
+# Reload Waybar in-place (avoids top-bar disappear/reflow bounce).
 apply_wallpaper() {
   local img="$1"
   if [[ ! -f "$img" ]]; then
@@ -84,8 +73,8 @@ apply_wallpaper() {
     swww img "$img" \
       --transition-type wipe \
       --transition-angle 45 \
-      --transition-duration 0.9 \
-      --transition-fps 60 >/dev/null 2>&1 || true
+      --transition-duration 0.8 \
+      --transition-fps 144 >/dev/null 2>&1 || true
     return
   fi
 
@@ -100,6 +89,34 @@ apply_wallpaper() {
 
 if [[ -n "${WALLPAPER:-}" ]]; then
   apply_wallpaper "$WALLPAPER"
+fi
+
+# Sync UI recolor with wallpaper wipe so colors don't jump too early.
+sleep 0.2
+
+if pgrep -x waybar >/dev/null 2>&1; then
+  pkill -USR2 -x waybar >/dev/null 2>&1 || true
+elif command -v systemctl >/dev/null 2>&1; then
+  systemctl --user restart waybar.service >/dev/null 2>&1 || true
+fi
+
+# Apply Hypr theme keys live to avoid full `hyprctl reload` bounce.
+if command -v hyprctl >/dev/null 2>&1; then
+  active_border="$(sed -n 's/^[[:space:]]*col.active_border[[:space:]]*=[[:space:]]*//p' "$THEME_DIR/hypr.conf" | head -n1)"
+  inactive_border="$(sed -n 's/^[[:space:]]*col.inactive_border[[:space:]]*=[[:space:]]*//p' "$THEME_DIR/hypr.conf" | head -n1)"
+  active_opacity="$(sed -n 's/^[[:space:]]*active_opacity[[:space:]]*=[[:space:]]*//p' "$THEME_DIR/hypr.conf" | head -n1)"
+  inactive_opacity="$(sed -n 's/^[[:space:]]*inactive_opacity[[:space:]]*=[[:space:]]*//p' "$THEME_DIR/hypr.conf" | head -n1)"
+  shadow_color="$(sed -n 's/^[[:space:]]*color[[:space:]]*=[[:space:]]*//p' "$THEME_DIR/hypr.conf" | head -n1)"
+
+  [[ -n "${active_border:-}" ]] && hyprctl keyword general:col.active_border "$active_border" >/dev/null 2>&1 || true
+  [[ -n "${inactive_border:-}" ]] && hyprctl keyword general:col.inactive_border "$inactive_border" >/dev/null 2>&1 || true
+  [[ -n "${active_opacity:-}" ]] && hyprctl keyword decoration:active_opacity "$active_opacity" >/dev/null 2>&1 || true
+  [[ -n "${inactive_opacity:-}" ]] && hyprctl keyword decoration:inactive_opacity "$inactive_opacity" >/dev/null 2>&1 || true
+  [[ -n "${shadow_color:-}" ]] && hyprctl keyword decoration:shadow:color "$shadow_color" >/dev/null 2>&1 || true
+fi
+
+if pgrep -x kitty >/dev/null 2>&1; then
+  pkill -USR1 -x kitty >/dev/null 2>&1 || true
 fi
 
 echo "Applied theme: $THEME"
