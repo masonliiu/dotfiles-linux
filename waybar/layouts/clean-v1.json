@@ -1,8 +1,8 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 34,
-  "spacing": 10,
+  "height": 36,
+  "spacing": 12,
   "margin-top": 0,
   "margin-left": 0,
   "margin-right": 0,
@@ -26,8 +26,8 @@
       "8": "8",
       "9": "9",
       "10": "10",
-      "urgent": "",
-      "default": ""
+      "urgent": "!",
+      "default": "•"
     },
     "persistent-workspaces": {
       "*": 6
@@ -36,12 +36,12 @@
 
   "hyprland/window": {
     "format": "{title}",
-    "max-length": 68,
+    "max-length": 64,
     "separate-outputs": true
   },
 
   "clock": {
-    "interval": 1,
+    "interval": 5,
     "format": "{:%a %d %I:%M}",
     "tooltip-format": "<tt>{calendar}</tt>",
     "calendar": {
@@ -54,30 +54,27 @@
 
   "pulseaudio": {
     "scroll-step": 3,
-    "format": " {volume}%",
-    "format-muted": "󰝟 mute",
-    "format-icons": {
-      "default": ["󰕿", "󰖀", "󰕾"]
-    },
+    "format": "VOL {volume}%",
+    "format-muted": "VOL mute",
     "on-click": "pavucontrol"
   },
 
   "network": {
     "interval": 5,
-    "format-wifi": "󰖩 {signalStrength}%",
-    "format-ethernet": "󰈀 lan",
-    "format-disconnected": "󰖪 offline",
+    "format-wifi": "WIFI {signalStrength}%",
+    "format-ethernet": "LAN",
+    "format-disconnected": "OFFLINE",
     "tooltip-format-wifi": "{essid} ({ipaddr})",
     "tooltip-format-ethernet": "{ifname} ({ipaddr})"
   },
 
   "cpu": {
-    "format": " {usage}%",
+    "format": "CPU {usage}%",
     "interval": 4
   },
 
   "memory": {
-    "format": " {}%",
+    "format": "RAM {}%",
     "interval": 4
   },
 
@@ -86,9 +83,9 @@
       "warning": 25,
       "critical": 12
     },
-    "format": "{icon} {capacity}%",
-    "format-charging": "󰂄 {capacity}%",
-    "format-plugged": "󰂄 ac",
-    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    "format": "BAT {capacity}%",
+    "format-charging": "CHG {capacity}%",
+    "format-plugged": "AC",
+    "format-icons": [" ", " "]
   }
 }

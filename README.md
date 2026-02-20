@@ -107,6 +107,8 @@ git config --global core.excludesfile ~/.gitignore_global
     - `~/.local/bin/waybar-layout-switch --list`
     - `~/.local/bin/waybar-layout-switch clean-v1 --save-slot shift-f1-current`
     - `~/.local/bin/waybar-layout-switch shift-f1-current`
+    - save slots are written under `~/.config/waybar-layout/slots/` (not tracked in git)
+    - layout switch also swaps `waybar/style.css` when a matching `waybar/layouts/<name>.css` exists
 - Theme switching:
   - `~/.local/bin/theme-switch --list`
   - `~/.local/bin/theme-switch <theme-name>`
