@@ -5,9 +5,7 @@ SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
 REPO_DIR="$(cd "$(dirname "$SCRIPT_PATH")/.." && pwd)"
 LAYOUT_DIR="$REPO_DIR/waybar/layouts"
 TARGET_CONFIG="$REPO_DIR/waybar/config"
-TARGET_STYLE="$REPO_DIR/waybar/style.css"
 STATE_DIR="$HOME/.config/waybar-layout"
-SLOT_DIR="$STATE_DIR/slots"
 CURRENT_FILE="$STATE_DIR/current"
 
 usage() {
@@ -23,10 +21,7 @@ USAGE
 }
 
 list_layouts() {
-  {
-    find "$LAYOUT_DIR" -mindepth 1 -maxdepth 1 -name '*.json' -type f -printf '%f\n' | sed 's/\.json$//'
-    find "$SLOT_DIR" -mindepth 1 -maxdepth 1 -name '*.json' -type f -printf '%f\n' 2>/dev/null | sed 's/\.json$//'
-  } | sort -u
+  find "$LAYOUT_DIR" -mindepth 1 -maxdepth 1 -name '*.json' -type f -printf '%f\n' | sed 's/\.json$//' | sort
 }
 
 if [[ "${1:-}" == "--list" ]]; then
@@ -57,24 +52,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-mkdir -p "$STATE_DIR"
-mkdir -p "$SLOT_DIR"
-
 TARGET_LAYOUT="$LAYOUT_DIR/$LAYOUT.json"
-TARGET_LAYOUT_STYLE="$LAYOUT_DIR/$LAYOUT.css"
-if [[ ! -f "$TARGET_LAYOUT" ]]; then
-  TARGET_LAYOUT="$SLOT_DIR/$LAYOUT.json"
-  TARGET_LAYOUT_STYLE="$SLOT_DIR/$LAYOUT.css"
-fi
-
-# Convenience: first press of restore slot seeds it from current files.
-if [[ ! -f "$TARGET_LAYOUT" && "$LAYOUT" == "shift-f1-current" ]]; then
-  cp "$TARGET_CONFIG" "$SLOT_DIR/$LAYOUT.json"
-  cp "$TARGET_STYLE" "$SLOT_DIR/$LAYOUT.css"
-  TARGET_LAYOUT="$SLOT_DIR/$LAYOUT.json"
-  TARGET_LAYOUT_STYLE="$SLOT_DIR/$LAYOUT.css"
-fi
-
 if [[ ! -f "$TARGET_LAYOUT" ]]; then
   echo "Layout not found: $LAYOUT"
   echo "Available:"
@@ -82,15 +60,13 @@ if [[ ! -f "$TARGET_LAYOUT" ]]; then
   exit 1
 fi
 
+mkdir -p "$STATE_DIR"
+
 if [[ -n "$SAVE_SLOT" ]] && ! cmp -s "$TARGET_CONFIG" "$TARGET_LAYOUT"; then
-  cp "$TARGET_CONFIG" "$SLOT_DIR/$SAVE_SLOT.json"
-  cp "$TARGET_STYLE" "$SLOT_DIR/$SAVE_SLOT.css"
+  cp "$TARGET_CONFIG" "$LAYOUT_DIR/$SAVE_SLOT.json"
 fi
 
 cp "$TARGET_LAYOUT" "$TARGET_CONFIG"
-if [[ -f "$TARGET_LAYOUT_STYLE" ]]; then
-  cp "$TARGET_LAYOUT_STYLE" "$TARGET_STYLE"
-fi
 printf '%s\n' "$LAYOUT" > "$CURRENT_FILE"
 
 if pgrep -x waybar >/dev/null 2>&1; then

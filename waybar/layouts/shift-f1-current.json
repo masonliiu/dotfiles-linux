@@ -1,15 +1,15 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 34,
-  "spacing": 10,
+  "height": 30,
+  "spacing": 14,
   "margin-top": 0,
   "margin-left": 0,
   "margin-right": 0,
 
-  "modules-left": ["hyprland/workspaces"],
-  "modules-center": ["hyprland/window"],
-  "modules-right": ["cpu", "memory", "network", "pulseaudio", "battery", "clock"],
+  "modules-left": ["hyprland/workspaces", "hyprland/window"],
+  "modules-center": ["clock"],
+  "modules-right": ["network", "pulseaudio", "cpu", "memory", "battery"],
 
   "hyprland/workspaces": {
     "active-only": false,
@@ -36,13 +36,13 @@
 
   "hyprland/window": {
     "format": "{title}",
-    "max-length": 68,
+    "max-length": 72,
     "separate-outputs": true
   },
 
   "clock": {
     "interval": 1,
-    "format": "{:%a %d %I:%M}",
+    "format": "{:%A %d %I:%M}",
     "tooltip-format": "<tt>{calendar}</tt>",
     "calendar": {
       "mode": "month",
@@ -54,7 +54,7 @@
 
   "pulseaudio": {
     "scroll-step": 3,
-    "format": " {volume}%",
+    "format": "{icon}  {volume}%",
     "format-muted": "󰝟 mute",
     "format-icons": {
       "default": ["󰕿", "󰖀", "󰕾"]
@@ -63,22 +63,22 @@
   },
 
   "network": {
-    "interval": 5,
-    "format-wifi": "󰖩 {signalStrength}%",
-    "format-ethernet": "󰈀 lan",
-    "format-disconnected": "󰖪 offline",
+    "interval": 3,
+    "format-wifi": "󰖩  {signalStrength}%",
+    "format-ethernet": "󰈀  lan",
+    "format-disconnected": "󰖪  offline",
     "tooltip-format-wifi": "{essid} ({ipaddr})",
     "tooltip-format-ethernet": "{ifname} ({ipaddr})"
   },
 
   "cpu": {
-    "format": " {usage}%",
-    "interval": 4
+    "format": "󰍛  {usage}%",
+    "interval": 2
   },
 
   "memory": {
-    "format": " {}%",
-    "interval": 4
+    "format": "󰘚  {}%",
+    "interval": 2
   },
 
   "battery": {
@@ -86,8 +86,8 @@
       "warning": 25,
       "critical": 12
     },
-    "format": "{icon} {capacity}%",
-    "format-charging": "󰂄 {capacity}%",
+    "format": "{icon}  {capacity}%",
+    "format-charging": "󰂄  {capacity}%",
     "format-plugged": "󰂄 ac",
     "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
   }
