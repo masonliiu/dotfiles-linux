@@ -1,14 +1,14 @@
 local c = {
-  bg = "#060606",
-  panel = "#0E0E0E",
-  panel2 = "#1B1B1B",
-  text = "#F2F2F2",
-  muted = "#8E8E8E",
-  accent = "#FFFFFF",
-  accent2 = "#D9D9D9",
-  success = "#C8C8C8",
-  warn = "#B8B8B8",
-  error = "#9A9A9A",
+  bg = "#0B0E1A",
+  panel = "#141A2A",
+  panel2 = "#1A2033",
+  text = "#E3E6F0",
+  muted = "#70789A",
+  accent = "#F2B9A6",
+  accent2 = "#A8B3D9",
+  success = "#AFC6D8",
+  warn = "#E7C5B2",
+  error = "#E79EA2",
 }
 
 local set = vim.api.nvim_set_hl
