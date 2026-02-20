@@ -1,14 +1,14 @@
 local c = {
-  bg = "#060608",
-  panel = "#0F1014",
-  panel2 = "#1A1C21",
+  bg = "#060606",
+  panel = "#0E0E0E",
+  panel2 = "#1B1B1B",
   text = "#F2F2F2",
-  muted = "#7B7F87",
-  accent = "#E33434",
-  accent2 = "#D9DCE1",
-  success = "#C9CDD4",
-  warn = "#B8BDC5",
-  error = "#EE4A4A",
+  muted = "#8E8E8E",
+  accent = "#FFFFFF",
+  accent2 = "#D9D9D9",
+  success = "#C8C8C8",
+  warn = "#B8B8B8",
+  error = "#9A9A9A",
 }
 
 local set = vim.api.nvim_set_hl
@@ -22,7 +22,7 @@ set(0, "Visual", { bg = c.panel2 })
 set(0, "Search", { fg = c.bg, bg = c.warn })
 set(0, "IncSearch", { fg = c.bg, bg = c.accent })
 set(0, "Pmenu", { fg = c.text, bg = c.panel })
-set(0, "PmenuSel", { fg = c.bg, bg = c.accent2 })
+set(0, "PmenuSel", { fg = c.bg, bg = c.accent })
 set(0, "StatusLine", { fg = c.text, bg = c.panel2 })
 set(0, "StatusLineNC", { fg = c.muted, bg = c.panel })
 set(0, "VertSplit", { fg = c.panel2, bg = c.bg })

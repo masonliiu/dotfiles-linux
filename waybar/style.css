@@ -8,12 +8,12 @@
 
 window#waybar {
   background: transparent;
-  color: #F2F2F2;
+  color: #F5F5F5;
   border: none;
 }
 
 window#waybar > box {
-  background: rgba(10, 10, 12, 0.94);
+  background: rgba(8, 8, 8, 0.94);
   border: none;
   border-radius: 0;
   padding: 0;
@@ -32,7 +32,7 @@ window#waybar > box {
   border-radius: 0;
   margin: 0 2px;
   padding: 0 8px;
-  color: #E7E7E7;
+  color: #EDEDED;
 }
 
 #workspaces {
@@ -40,29 +40,29 @@ window#waybar > box {
 }
 
 #workspaces button {
-  color: #8E9198;
+  color: #8A8A8A;
   padding: 0 5px;
   margin: 0 1px;
   min-width: 0;
 }
 
 #workspaces button.active {
-  color: #E33434;
+  color: #FFFFFF;
   font-weight: 700;
 }
 
 #workspaces button:hover {
-  color: #DADADA;
+  color: #CFCFCF;
   background: transparent;
 }
 
 #window {
-  color: #B5B8BE;
+  color: #B7B7B7;
   font-weight: 600;
 }
 
 #clock {
-  color: #E33434;
+  color: #FFFFFF;
   font-weight: 700;
   letter-spacing: 0.2px;
 }
@@ -72,19 +72,24 @@ window#waybar > box {
 #cpu,
 #memory,
 #battery {
-  color: #D9DCE1;
+  color: #EDEDED;
 }
 
-#battery.warning { color: #CFCFCF; }
-#battery.critical { color: #E33434; }
+#battery.warning {
+  color: #D0D0D0;
+}
+
+#battery.critical {
+  color: #9A9A9A;
+}
 
 tooltip {
-  background: #0A0A0C;
-  border: 1px solid #8A8D94;
+  background: #0A0A0A;
+  border: 1px solid #B8B8B8;
   border-radius: 0;
 }
 
 tooltip label {
-  color: #F2F2F2;
+  color: #F5F5F5;
   padding: 6px;
 }
