@@ -101,6 +101,9 @@ git config --global core.excludesfile ~/.gitignore_global
   - autosuggestion + fzf quick insert bindings
 - Waybar:
   - managed by `systemd --user` with auto-restart
+- Maintenance:
+  - run on demand: `~/.local/bin/dotfiles-maintenance`
+  - weekly timer: `dotfiles-maintenance.timer` (Sunday 10:00, persistent)
 - Theme switching:
   - `~/.local/bin/theme-switch --list`
   - `~/.local/bin/theme-switch <theme-name>`

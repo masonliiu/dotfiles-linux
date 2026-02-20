@@ -43,6 +43,8 @@ fi
 link_file "$REPO_DIR/waybar" "$HOME/.config/waybar"
 link_file "$REPO_DIR/wlogout" "$HOME/.config/wlogout"
 link_file "$REPO_DIR/systemd/user/waybar.service" "$HOME/.config/systemd/user/waybar.service"
+link_file "$REPO_DIR/systemd/user/dotfiles-maintenance.service" "$HOME/.config/systemd/user/dotfiles-maintenance.service"
+link_file "$REPO_DIR/systemd/user/dotfiles-maintenance.timer" "$HOME/.config/systemd/user/dotfiles-maintenance.timer"
 link_file "$REPO_DIR/nvim/init.lua" "$HOME/.config/nvim/init.lua"
 link_file "$REPO_DIR/nvim/lua" "$HOME/.config/nvim/lua"
 link_file "$REPO_DIR/bin/cliphist-picker" "$HOME/.local/bin/cliphist-picker"
@@ -51,6 +53,7 @@ link_file "$REPO_DIR/bin/record-screen" "$HOME/.local/bin/record-screen"
 link_file "$REPO_DIR/bin/record-screen-picker" "$HOME/.local/bin/record-screen-picker"
 link_file "$REPO_DIR/bin/brightness-step" "$HOME/.local/bin/brightness-step"
 link_file "$REPO_DIR/bin/power-menu" "$HOME/.local/bin/power-menu"
+link_file "$REPO_DIR/bin/dotfiles-maintenance" "$HOME/.local/bin/dotfiles-maintenance"
 link_file "$REPO_DIR/bin/theme-switch" "$HOME/.local/bin/theme-switch"
 link_file "$REPO_DIR/bin/theme-cycle" "$HOME/.local/bin/theme-cycle"
 if [ -f "$REPO_DIR/bin/unityhub-x11" ]; then
@@ -61,6 +64,7 @@ link_file "$REPO_DIR/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
 
 systemctl --user daemon-reload >/dev/null 2>&1 || true
 systemctl --user enable --now waybar.service >/dev/null 2>&1 || true
+systemctl --user enable --now dotfiles-maintenance.timer >/dev/null 2>&1 || true
 
 echo "Dotfiles linked. Backups (if any): $HOME/.dotfiles-backup/$TS"
 echo "Set global gitignore: git config --global core.excludesfile ~/.gitignore_global"

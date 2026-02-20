@@ -1,0 +1,6 @@
+[Unit]
+Description=Dotfiles Maintenance Check
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash -lc '%h/.local/bin/dotfiles-maintenance'
