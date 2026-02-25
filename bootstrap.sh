@@ -35,6 +35,9 @@ link_file "$REPO_DIR/git/.gitconfig" "$HOME/.gitconfig"
 link_file "$REPO_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
 link_file "$REPO_DIR/hypr/hyprland.conf" "$HOME/.config/hypr/hyprland.conf"
 link_file "$REPO_DIR/hypr/theme.conf" "$HOME/.config/hypr/theme.conf"
+if [ -f "$REPO_DIR/hypr/hypridle.conf" ]; then
+  link_file "$REPO_DIR/hypr/hypridle.conf" "$HOME/.config/hypr/hypridle.conf"
+fi
 if [ -f "$REPO_DIR/host/$HOST_SHORT/hypr.conf" ]; then
   link_file "$REPO_DIR/host/$HOST_SHORT/hypr.conf" "$HOME/.config/hypr/host.conf"
 else

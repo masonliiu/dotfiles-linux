@@ -16,3 +16,8 @@
 [user]
 	name = masonliiu
 	email = 138553405+masonliiu@users.noreply.github.com
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f

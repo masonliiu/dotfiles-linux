@@ -1,0 +1,40 @@
+window {
+  margin: 0;
+  border: 1px solid #CDA6FF;
+  border-radius: 14px;
+  background-color: rgba(8, 6, 22, 0.92);
+}
+
+#input {
+  margin: 12px;
+  padding: 10px 12px;
+  border: 1px solid #7E71A4;
+  border-radius: 10px;
+  background-color: rgba(16, 12, 34, 0.95);
+  color: #EEE8FF;
+}
+
+#outer-box {
+  margin: 0 12px 12px 12px;
+}
+
+#entry {
+  padding: 10px 12px;
+  margin: 4px 0;
+  border-radius: 10px;
+  color: #E7DFFF;
+  background-color: transparent;
+}
+
+#entry:selected {
+  color: #080616;
+  background-color: #CDA6FF;
+}
+
+#img {
+  margin-right: 10px;
+}
+
+#text {
+  color: inherit;
+}

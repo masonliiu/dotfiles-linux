@@ -1,0 +1,16 @@
+width=38%
+height=48%
+location=center
+xoffset=0
+yoffset=0
+prompt=Search apps...
+allow_images=true
+image_size=20
+term=kitty
+hide_scroll=true
+no_actions=true
+normal_window=true
+matching=fuzzy
+insensitive=true
+sort_order=alphabetical
+gtk_dark=true
