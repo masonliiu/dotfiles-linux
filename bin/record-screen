@@ -11,6 +11,7 @@ fps=""
 crf=""
 preset=""
 ext=""
+extra_args=()
 mkdir -p "$out_dir"
 
 notify() {
@@ -27,6 +28,49 @@ stop_recording() {
   if is_recording; then
     pkill -INT -x wf-recorder || true
     notify "Recording stopped"
+  else
+    notify "No active recording"
+  fi
+}
+
+start_wf_recorder() {
+  local out="$1"
+  shift
+  local -a base_args=("$@")
+  local -a attempt1=("${extra_args[@]}" "${base_args[@]}")
+  local -a attempt2=("${extra_args[@]}" -D "${base_args[@]}")
+  local -a attempt3=("${extra_args[@]}" -D -r 60 -c libx264 -x yuv420p "${base_args[@]}")
+  local attempt_label=""
+
+  try_start() {
+    local label="$1"
+    shift
+    : >/tmp/wf-recorder.log
+    nohup wf-recorder "$@" -f "$out" >/tmp/wf-recorder.log 2>&1 &
+    local pid=$!
+    sleep 0.7
+    if kill -0 "$pid" >/dev/null 2>&1; then
+      attempt_label="$label"
+      return 0
+    fi
+    return 1
+  }
+
+  if try_start "default" "${attempt1[@]}"; then
+    :
+  elif try_start "no-damage" "${attempt2[@]}"; then
+    :
+  elif try_start "safe-60fps" "${attempt3[@]}"; then
+    :
+  else
+    notify "Recording failed. Check /tmp/wf-recorder.log"
+    return 1
+  fi
+
+  if [[ "$attempt_label" == "default" ]]; then
+    notify "Recording started: $(basename "$out")"
+  else
+    notify "Recording started (${attempt_label}): $(basename "$out")"
   fi
 }
 
@@ -58,21 +102,30 @@ set_profile() {
   esac
 }
 
+set_runtime_flags() {
+  extra_args=()
+
+  # On some Hyprland + wf-recorder 0.6.0 setups, GPU buffer copies fail with:
+  # "Failed to copy frame, retrying...". Force CPU copies by default.
+  if [[ "${WF_RECORDER_NO_DMABUF:-1}" != "0" ]]; then
+    extra_args+=(--no-dmabuf)
+  fi
+}
+
 start_full() {
   local out="$out_dir/recording-${profile}-$(date +%Y%m%d-%H%M%S).${ext}"
-  notify "Recording full (${profile}, ${fps}fps, ${pixel_format})"
-  nohup wf-recorder -a -r "$fps" -c "$video_codec" -C "$audio_codec" -x "$pixel_format" -p "preset=${preset}" -p "crf=${crf}" -f "$out" >/tmp/wf-recorder.log 2>&1 &
+  start_wf_recorder "$out" -a -r "$fps" -c "$video_codec" -C "$audio_codec" -x "$pixel_format" -p "preset=${preset}" -p "crf=${crf}"
 }
 
 start_region() {
   local out="$out_dir/recording-region-${profile}-$(date +%Y%m%d-%H%M%S).${ext}"
   local geo
   geo="$(slurp)" || exit 0
-  notify "Recording region (${profile}, ${fps}fps, ${pixel_format})"
-  nohup wf-recorder -a -g "$geo" -r "$fps" -c "$video_codec" -C "$audio_codec" -x "$pixel_format" -p "preset=${preset}" -p "crf=${crf}" -f "$out" >/tmp/wf-recorder.log 2>&1 &
+  start_wf_recorder "$out" -a -g "$geo" -r "$fps" -c "$video_codec" -C "$audio_codec" -x "$pixel_format" -p "preset=${preset}" -p "crf=${crf}"
 }
 
 set_profile
+set_runtime_flags
 
 case "$mode" in
   toggle)

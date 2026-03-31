@@ -28,7 +28,14 @@ check_cmd wl-paste "wl-paste present"
 check_cmd grim "grim present"
 check_cmd slurp "slurp present"
 check_cmd wf-recorder "wf-recorder present"
-check_cmd swww "swww present"
+if command -v awww >/dev/null 2>&1; then
+  pass "awww present"
+elif command -v swww >/dev/null 2>&1; then
+  pass "swww present"
+else
+  fail "wallpaper backend present (awww or swww)"
+  failed=1
+fi
 check_cmd jq "jq present"
 check_cmd hyprctl "hyprctl present"
 check_cmd ssh "ssh present"
@@ -83,10 +90,12 @@ else
   warn "no current theme state file (~/.config/theme-switch/current)"
 fi
 
-if pgrep -x swww-daemon >/dev/null 2>&1; then
+if pgrep -x awww-daemon >/dev/null 2>&1; then
+  pass "awww-daemon running"
+elif pgrep -x swww-daemon >/dev/null 2>&1; then
   pass "swww-daemon running"
 else
-  warn "swww-daemon not running (theme switch will start it on demand)"
+  warn "wallpaper daemon not running (theme switch will start it on demand)"
 fi
 
 if nvim --headless '+qall' >/dev/null 2>&1; then
