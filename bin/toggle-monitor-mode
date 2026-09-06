@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+LAPTOP_MONITOR="eDP-1"
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/hypr-monitor-mode"
+STATE_FILE="$STATE_DIR/mode"
+
+if ! command -v hyprctl >/dev/null 2>&1 || ! command -v jq >/dev/null 2>&1; then
+  echo "toggle-monitor-mode requires hyprctl and jq" >&2
+  exit 1
+fi
+
+mkdir -p "$STATE_DIR"
+
+mapfile -t external_monitors < <(
+  hyprctl monitors all -j |
+    jq -r --arg laptop "$LAPTOP_MONITOR" \
+      '.[] | select(.name != $laptop and (.disabled // false) == false) | .name'
+)
+
+if [[ ${#external_monitors[@]} -eq 0 || -z "${external_monitors[0]}" ]]; then
+  if command -v notify-send >/dev/null 2>&1; then
+    notify-send -a Hyprland "Monitor mode" "No external monitor detected"
+  fi
+  exit 1
+fi
+
+external="${external_monitors[0]}"
+
+# Prefer Hyprland's live state so swapping displays or reloading the config
+# cannot leave the toggle one press out of sync. Fall back to the state file
+# only if the live monitor query does not include the laptop panel.
+current_mode="$(
+  hyprctl monitors all -j |
+    jq -r --arg laptop "$LAPTOP_MONITOR" \
+      '.[] | select(.name == $laptop) | if (.mirrorOf // "none") != "none" then "mirror" else "extend" end' |
+    head -n1
+)"
+if [[ "$current_mode" != "mirror" && "$current_mode" != "extend" ]]; then
+  if [[ -f "$STATE_FILE" ]]; then
+    current_mode="$(<"$STATE_FILE")"
+  else
+    current_mode="extend"
+  fi
+fi
+
+if [[ "$current_mode" == "mirror" ]]; then
+  # Keep the laptop at the origin and place the external display to its right.
+  hyprctl keyword monitor "$LAPTOP_MONITOR,2560x1600@240,0x0,1.6,transform,0" >/dev/null
+  hyprctl keyword monitor "$external,preferred,auto-right,1,transform,0,bitdepth,10" >/dev/null
+  next_mode="extend"
+else
+  # Make the 16:9 external display the source. This avoids forcing the
+  # laptop's 16:10 framebuffer into the TV, which causes cropping/stretching.
+  hyprctl keyword monitor "$external,preferred,0x0,1,transform,0,bitdepth,10" >/dev/null
+  hyprctl keyword monitor "$LAPTOP_MONITOR,preferred,0x0,1.6,transform,0,mirror,$external" >/dev/null
+  next_mode="mirror"
+fi
+
+printf '%s\n' "$next_mode" > "$STATE_FILE"
+
+if command -v notify-send >/dev/null 2>&1; then
+  notify-send -a Hyprland "Monitor mode" "${next_mode^}"
+fi

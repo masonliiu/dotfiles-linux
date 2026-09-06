@@ -1,6 +1,6 @@
 # dotfiles-linux
 
-Linux-focused dotfiles for this machine.
+Portable Linux dotfiles for Hyprland machines.
 
 ## Includes
 - `bash/.bashrc`
@@ -14,9 +14,10 @@ Linux-focused dotfiles for this machine.
 - `git/.gitignore_global`
 - `git/.gitconfig`
 - `tmux/.tmux.conf`
-- `hypr/hyprland.conf`
-- `hypr/theme.conf`
-- `host/default/hypr.conf`
+- `hypr/hyprland.lua` (primary Hyprland 0.55+ config)
+- `hypr/hyprland.conf` (legacy fallback)
+- `hypr/theme.lua` and `hypr/theme.conf` (Lua + legacy theme bridges)
+- `host/default/hypr.lua` and `host/default/hypr.conf`
 - `waybar/config`
 - `waybar/style.css`
 - `systemd/user/waybar.service`
@@ -28,6 +29,9 @@ Linux-focused dotfiles for this machine.
 - `bin/record-screen-picker`
 - `bin/theme-switch`
 - `bin/theme-cycle`
+- `bin/toggle-monitor-mode`
+- `bin/toggle-lid-sleep`
+- `bin/gammastep-toggle`
 - `ssh/config`
 - `kitty/kitty.conf`
 - `themes/*`
@@ -38,10 +42,19 @@ Linux-focused dotfiles for this machine.
 git config --global core.excludesfile ~/.gitignore_global
 ```
 
+`bootstrap.sh` links both Hyprland config formats. On Hyprland 0.55 and newer,
+`hyprland.lua` is loaded and the host-specific `host.lua` supplies monitor
+layouts. The old `.conf` files remain linked so you can roll back or use an
+older Hyprland release. The script uses `$HOME` and the detected hostname, so
+the same checkout can be used by a different Linux user or on the Asahi Mac.
+
 ## Packages (CachyOS/Arch)
 ```bash
 ./scripts/install-cachyos-core.sh
 ```
+
+That package helper is CachyOS-specific; do not run it on the Asahi Mac. Install
+the equivalent Arch/Asahi packages there, then run `./bootstrap.sh`.
 
 ## Cursor IDE
 ```bash
@@ -52,6 +65,9 @@ git config --global core.excludesfile ~/.gitignore_global
 ```bash
 ./scripts/restore.sh
 ```
+
+`restore.sh` is a CachyOS-oriented convenience wrapper. On Asahi/Arch, use
+`./bootstrap.sh` directly and install only the packages you need.
 
 ## Verify
 ```bash
@@ -107,7 +123,7 @@ git config --global core.excludesfile ~/.gitignore_global
 - Theme switching:
   - `~/.local/bin/theme-switch --list`
   - `~/.local/bin/theme-switch <theme-name>`
-  - updates: `waybar/style.css`, `kitty/kitty.conf`, `nvim/lua/config/theme.lua`, `~/.config/hypr/theme.conf`
+  - updates: `waybar/style.css`, `kitty/kitty.conf`, `nvim/lua/config/theme.lua`, and `~/.config/hypr/theme.conf`; the active Hyprland config is reloaded, and Lua reads the shared theme state
   - optional wallpaper path per theme in `themes/<name>/theme.env`
   - default wallpaper filenames expected:
     - `~/Pictures/Wallpapers/midnight-sapphire.jpg`
@@ -118,6 +134,7 @@ git config --global core.excludesfile ~/.gitignore_global
     - `~/Pictures/Wallpapers/red-city.jpg`
 - Host overrides:
   - `bootstrap.sh` links `~/.config/hypr/host.conf`
-  - if `host/<hostname>/hypr.conf` exists, it is used
-  - otherwise `host/default/hypr.conf` is used
-  - `host/masonlegion/hypr.conf` pins Hyprland DRM device to Intel iGPU for stability
+  - it also links `~/.config/hypr/host.lua`
+  - if `host/<hostname>/hypr.lua`/`.conf` exists, it is used
+  - otherwise the generic preferred-monitor host files are used
+  - `host/masonlegion` contains this machine's external-display layout

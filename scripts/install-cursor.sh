@@ -35,15 +35,15 @@ EOS
 
 chmod +x "$HOME/.local/bin/cursor" "$HOME/.local/bin/cursor-x11"
 
-cat > "$HOME/.local/share/applications/cursor.desktop" <<'EOS'
+cat > "$HOME/.local/share/applications/cursor.desktop" <<EOF
 [Desktop Entry]
 Type=Application
 Name=Cursor
 Comment=AI code editor
-Exec=/home/mason/.local/bin/cursor-x11 %F
+Exec=$HOME/.local/bin/cursor-x11 %F
 Terminal=false
 Categories=Development;IDE;TextEditor;
 StartupNotify=true
-EOS
+EOF
 
 echo "Cursor installed. Launch with: ~/.local/bin/cursor-x11"

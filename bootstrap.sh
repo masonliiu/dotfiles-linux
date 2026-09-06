@@ -3,7 +3,15 @@ set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TS="$(date +%Y%m%d-%H%M%S)"
-HOST_SHORT="$(hostname -s 2>/dev/null || hostname)"
+HOST_SHORT="${HOSTNAME:-}"
+if command -v hostname >/dev/null 2>&1; then
+  HOST_SHORT="$(hostname -s 2>/dev/null || hostname 2>/dev/null || true)"
+fi
+if [ -z "$HOST_SHORT" ] && command -v uname >/dev/null 2>&1; then
+  HOST_SHORT="$(uname -n 2>/dev/null || true)"
+fi
+HOST_SHORT="${HOST_SHORT%%.*}"
+[ -n "$HOST_SHORT" ] || HOST_SHORT="default"
 
 backup_file() {
   local src="$1"
@@ -34,7 +42,12 @@ link_file "$REPO_DIR/git/.gitignore_global" "$HOME/.gitignore_global"
 link_file "$REPO_DIR/git/.gitconfig" "$HOME/.gitconfig"
 link_file "$REPO_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
 link_file "$REPO_DIR/hypr/hyprland.conf" "$HOME/.config/hypr/hyprland.conf"
+link_file "$REPO_DIR/hypr/hyprland.lua" "$HOME/.config/hypr/hyprland.lua"
 link_file "$REPO_DIR/hypr/theme.conf" "$HOME/.config/hypr/theme.conf"
+link_file "$REPO_DIR/hypr/theme.lua" "$HOME/.config/hypr/theme.lua"
+if [ -f "$REPO_DIR/hypr/openwhispr-binds.conf" ]; then
+  link_file "$REPO_DIR/hypr/openwhispr-binds.conf" "$HOME/.config/hypr/openwhispr-binds.conf"
+fi
 if [ -f "$REPO_DIR/hypr/hypridle.conf" ]; then
   link_file "$REPO_DIR/hypr/hypridle.conf" "$HOME/.config/hypr/hypridle.conf"
 fi
@@ -42,6 +55,11 @@ if [ -f "$REPO_DIR/host/$HOST_SHORT/hypr.conf" ]; then
   link_file "$REPO_DIR/host/$HOST_SHORT/hypr.conf" "$HOME/.config/hypr/host.conf"
 else
   link_file "$REPO_DIR/host/default/hypr.conf" "$HOME/.config/hypr/host.conf"
+fi
+if [ -f "$REPO_DIR/host/$HOST_SHORT/hypr.lua" ]; then
+  link_file "$REPO_DIR/host/$HOST_SHORT/hypr.lua" "$HOME/.config/hypr/host.lua"
+else
+  link_file "$REPO_DIR/host/default/hypr.lua" "$HOME/.config/hypr/host.lua"
 fi
 link_file "$REPO_DIR/waybar" "$HOME/.config/waybar"
 link_file "$REPO_DIR/wlogout" "$HOME/.config/wlogout"
@@ -59,15 +77,24 @@ link_file "$REPO_DIR/bin/power-menu" "$HOME/.local/bin/power-menu"
 link_file "$REPO_DIR/bin/dotfiles-maintenance" "$HOME/.local/bin/dotfiles-maintenance"
 link_file "$REPO_DIR/bin/theme-switch" "$HOME/.local/bin/theme-switch"
 link_file "$REPO_DIR/bin/theme-cycle" "$HOME/.local/bin/theme-cycle"
+link_file "$REPO_DIR/bin/toggle-monitor-mode" "$HOME/.local/bin/toggle-monitor-mode"
+if [ -f "$REPO_DIR/bin/toggle-lid-sleep" ]; then
+  link_file "$REPO_DIR/bin/toggle-lid-sleep" "$HOME/.local/bin/toggle-lid-sleep"
+fi
+if [ -f "$REPO_DIR/bin/gammastep-toggle" ]; then
+  link_file "$REPO_DIR/bin/gammastep-toggle" "$HOME/.local/bin/gammastep-toggle"
+fi
 if [ -f "$REPO_DIR/bin/unityhub-x11" ]; then
   link_file "$REPO_DIR/bin/unityhub-x11" "$HOME/.local/bin/unityhub-x11"
 fi
 link_file "$REPO_DIR/ssh/config" "$HOME/.ssh/config"
 link_file "$REPO_DIR/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
 
-systemctl --user daemon-reload >/dev/null 2>&1 || true
-systemctl --user enable --now waybar.service >/dev/null 2>&1 || true
-systemctl --user enable --now dotfiles-maintenance.timer >/dev/null 2>&1 || true
+if [ "${DOTFILES_SKIP_SYSTEMD:-0}" != "1" ] && command -v systemctl >/dev/null 2>&1; then
+  systemctl --user daemon-reload >/dev/null 2>&1 || true
+  systemctl --user enable --now waybar.service >/dev/null 2>&1 || true
+  systemctl --user enable --now dotfiles-maintenance.timer >/dev/null 2>&1 || true
+fi
 
 echo "Dotfiles linked. Backups (if any): $HOME/.dotfiles-backup/$TS"
 echo "Set global gitignore: git config --global core.excludesfile ~/.gitignore_global"

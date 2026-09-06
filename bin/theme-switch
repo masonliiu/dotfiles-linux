@@ -113,19 +113,11 @@ elif command -v systemctl >/dev/null 2>&1; then
   systemctl --user restart waybar.service >/dev/null 2>&1 || true
 fi
 
-# Apply Hypr theme keys live to avoid full `hyprctl reload` bounce.
-if command -v hyprctl >/dev/null 2>&1; then
-  active_border="$(sed -n 's/^[[:space:]]*col.active_border[[:space:]]*=[[:space:]]*//p' "$THEME_DIR/hypr.conf" | head -n1)"
-  inactive_border="$(sed -n 's/^[[:space:]]*col.inactive_border[[:space:]]*=[[:space:]]*//p' "$THEME_DIR/hypr.conf" | head -n1)"
-  active_opacity="$(sed -n 's/^[[:space:]]*active_opacity[[:space:]]*=[[:space:]]*//p' "$THEME_DIR/hypr.conf" | head -n1)"
-  inactive_opacity="$(sed -n 's/^[[:space:]]*inactive_opacity[[:space:]]*=[[:space:]]*//p' "$THEME_DIR/hypr.conf" | head -n1)"
-  shadow_color="$(sed -n 's/^[[:space:]]*color[[:space:]]*=[[:space:]]*//p' "$THEME_DIR/hypr.conf" | head -n1)"
-
-  [[ -n "${active_border:-}" ]] && hyprctl keyword general:col.active_border "$active_border" >/dev/null 2>&1 || true
-  [[ -n "${inactive_border:-}" ]] && hyprctl keyword general:col.inactive_border "$inactive_border" >/dev/null 2>&1 || true
-  [[ -n "${active_opacity:-}" ]] && hyprctl keyword decoration:active_opacity "$active_opacity" >/dev/null 2>&1 || true
-  [[ -n "${inactive_opacity:-}" ]] && hyprctl keyword decoration:inactive_opacity "$inactive_opacity" >/dev/null 2>&1 || true
-  [[ -n "${shadow_color:-}" ]] && hyprctl keyword decoration:shadow:color "$shadow_color" >/dev/null 2>&1 || true
+# The Lua config reads the shared state file on reload. Keep the legacy
+# theme.conf copy above for older Hyprland sessions, then reload once so both
+# config formats receive the same theme.
+if [[ "${DOTFILES_THEME_NO_RELOAD:-0}" != "1" ]] && command -v hyprctl >/dev/null 2>&1; then
+  hyprctl reload >/dev/null 2>&1 || true
 fi
 
 if pgrep -x kitty >/dev/null 2>&1; then

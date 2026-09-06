@@ -45,8 +45,11 @@ check_cmd wofi "wofi present"
 echo "== Dotfile links =="
 for p in \
   "$HOME/.config/hypr/hyprland.conf" \
+  "$HOME/.config/hypr/hyprland.lua" \
   "$HOME/.config/hypr/theme.conf" \
+  "$HOME/.config/hypr/theme.lua" \
   "$HOME/.config/hypr/host.conf" \
+  "$HOME/.config/hypr/host.lua" \
   "$HOME/.config/kitty/kitty.conf" \
   "$HOME/.tmux.conf" \
   "$HOME/.config/nvim/init.lua" \
@@ -63,6 +66,14 @@ do
     warn "not a symlink: $p"
   fi
 done
+
+if command -v hyprland >/dev/null 2>&1 && [ -f "$HOME/.config/hypr/hyprland.lua" ]; then
+  if hyprland --verify-config --config "$HOME/.config/hypr/hyprland.lua" >/tmp/dotfiles-doctor-hyprland.log 2>&1; then
+    pass "Hyprland Lua config verifies"
+  else
+    warn "Hyprland Lua config verification failed (see /tmp/dotfiles-doctor-hyprland.log)"
+  fi
+fi
 
 echo "== Runtime checks =="
 if systemctl --user is-active waybar.service >/dev/null 2>&1; then

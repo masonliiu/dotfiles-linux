@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -u
+
+unit="lid-switch-inhibitor.service"
+
+if systemctl --user is-active --quiet "$unit"; then
+    if systemctl --user stop "$unit"; then
+        notify-send --app-name="Lid Sleep Toggle" --icon=system-suspend \
+            "Lid sleep enabled" "Closing the lid will suspend the laptop."
+    else
+        notify-send --app-name="Lid Sleep Toggle" --icon=dialog-warning \
+            "Could not enable lid sleep" "The user inhibitor could not be stopped."
+    fi
+else
+    if systemd-run --user --quiet --collect --unit="$unit" \
+        systemd-inhibit --what=handle-lid-switch --mode=block \
+        --who="Lid Sleep Toggle" \
+        --why="Keep the laptop awake while its lid is closed" sleep infinity; then
+        notify-send --app-name="Lid Sleep Toggle" --icon=system-lock-screen \
+            "Lid sleep disabled" "Closing the lid will keep the laptop awake."
+    else
+        notify-send --app-name="Lid Sleep Toggle" --icon=dialog-warning \
+            "Could not disable lid sleep" "The user inhibitor could not be started."
+    fi
+fi
